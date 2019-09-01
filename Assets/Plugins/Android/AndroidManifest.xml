@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:icon="@drawable/app_icon"
+                 android:label="@string/app_name">
+
+        <activity
+            android:name="com.plugin.speech.pluginlibrary.ActivityClass"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="com.google.intent.category.CARDBOARD" />
+            </intent-filter>
+        </activity>
+                 
+        <!--<activity android:name="com.google.unity.UnityPlayerActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:launchMode="singleTask"
+                  android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="com.google.intent.category.CARDBOARD" />
+            </intent-filter>
+            <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+        </activity>-->
+
+        
+
+        <meta-data android:name="IMMERSIVE_MODE" android:value="true" />
+    </application>
+    <!-- Google VR SDK -->
+    <!-- Set target sdk version to Lollipop to prevent issues with Marshmallow's runtime permissions. -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="24" />
+    <uses-feature android:glEsVersion="0x00020000" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
+    <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- VR feature tags. -->
+    <uses-feature android:name="android.software.vr.mode" android:required="false"/>
+    <uses-feature android:name="android.hardware.vr.high_performance" android:required="false"/>
+
+    <!-- Camera Plugin -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Permissões -->
+    <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="true" />
+</manifest>
