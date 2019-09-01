@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum FILTROS_POSTPROCESS {NENHUM, ALTA_SATURACAO, ALTO_CONTRASTE_1};
+
 public class MainUpdate : MonoBehaviour
 {
-    //public Renderer rend;
+    
 	
 
     /* WEBCAM */
     public bool frontFacing;
     public RawImage background;
+    public FILTROS_POSTPROCESS Filtro;
+    public int Contraste;
     public AspectRatioFitter fit;
     private bool camAvailable;
 	private WebCamTexture cameraTexture;
@@ -69,9 +73,6 @@ public class MainUpdate : MonoBehaviour
         background.texture = output;
         data = new Color32[cameraTexture.width * cameraTexture.height];
 
-
-        //this.plano = GameObject.Find("PlanoRender");
-        //plano.renderer.material.mainTexture = textureCamera;
     }
 
 
@@ -88,38 +89,47 @@ public class MainUpdate : MonoBehaviour
 
         if (data != null) {
             cameraTexture.GetPixels32(data);
-            // Processa
 
-            // para de processar
+            if(this.Filtro != FILTROS_POSTPROCESS.NENHUM){
+                int pixel=0;
+                
+                if(this.Filtro == FILTROS_POSTPROCESS.ALTA_SATURACAO){
+                    float H, S, V;
+                    while(pixel < data.Length){
+                        Color.RGBToHSV( data[pixel] , out H, out S, out V);
+                        data[pixel] = Color.HSVToRGB(H, 1, V);
+                        pixel++;
+                    }
+                } else if (this.Filtro == FILTROS_POSTPROCESS.ALTO_CONTRASTE_1){
+                    /*
+                    Ref.: https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/
+                    factor = (259 * (contrast + 255)) / (255 * (259 - contrast))
+                    colour = GetPixelColour(x, y)
+                    newRed   = Truncate(factor * (Red(colour)   - 128) + 128)
+                    newGreen = Truncate(factor * (Green(colour) - 128) + 128)
+                    newBlue  = Truncate(factor * (Blue(colour)  - 128) + 128)
+                    PutPixelColour(x, y) = RGB(newRed, newGreen, newBlue)
+                    */
+
+                    float fator = ((float)(259f * (this.Contraste + 255f))) / ((float)(255f * (259f - this.Contraste)));
+                    while(pixel < data.Length){
+                        data[pixel] = new Color32(
+                            (byte) Mathf.Round(fator * (data[pixel].r   - 128f) + 128f),
+                            (byte) Mathf.Round(fator * (data[pixel].g   - 128f) + 128f),
+                            (byte) Mathf.Round(fator * (data[pixel].b   - 128f) + 128f),
+                            (byte) data[pixel].a
+                        );
+                        pixel++;
+                    }
+                }
+
+            }
+
             output.SetPixels32(data);
             output.Apply();
         }
         
-        //tex2D = (cameraTexture as Texture2D);
-        
 
-        /* Post Processing */
-        
-        /*for (int y = 0; y < background.texture.height; y++)
-        {
-            for (int x = 0; x < background.texture.width; x++)
-            {
-                //Color color = ((x & y) != 0 ? Color.white : Color.gray);
-                Color COR = (background.texture as Texture2D).GetColor(x, y);
-                newTexture.SetPixel(x, y, color);
-            }
-        }*/
-
-        //(background.texture as Texture2D).Apply();
-        
-        
-        
-
-		/*int orient = -cameraTexture.videoRotationAngle;
-		background.rectTransform.localEulerAngles = new Vector3(0,0, orient);*/
-
-        //if( NativeCamera.IsCameraBusy() ) return;
-        //TakePicture( 512 );
     }
 
     void solicitaPermissoes(){
@@ -147,58 +157,5 @@ public class MainUpdate : MonoBehaviour
         
     }
 
-    public static Texture2D ToTexture2D(WebCamTexture texture)
-         {
-             return Texture2D.CreateExternalTexture(
-                 texture.width,
-                 texture.height,
-                 TextureFormat.RGB24,
-                 false, false,
-                 texture.GetNativeTexturePtr());
-         }
 
-/* 
-    private void TakePicture( int maxSize ) {
-        NativeCamera.Permission permission = NativeCamera.TakePicture( ( path ) =>
-        {
-            //Debug.Log( "Image path: " + path );
-            if( path != null )
-            {
-                // Create a Texture2D from the captured image
-                Texture2D textureCamera = NativeCamera.LoadImageAtPath( path, maxSize );
-                if( textureCamera == null )
-                {
-                    Debug.Log( "Couldn't load texture from " + path );
-                    return;
-                }
-
-                //rend.material.mainTexture = textureCamera;
-
-                
-                
-                // Assign texture to a temporary quad and destroy it after 5 seconds
-                GameObject quad = GameObject.CreatePrimitive( PrimitiveType.Quad );
-                quad.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2.5f;
-                quad.transform.forward = Camera.main.transform.forward;
-                quad.transform.localScale = new Vector3( 1f, textureCamera.height / (float) textureCamera.width, 1f );
-                
-                Material material = quad.GetComponent<Renderer>().material;
-                if( !material.shader.isSupported ) // happens when Standard shader is not included in the build
-                    material.shader = Shader.Find( "Legacy Shaders/Diffuse" );
-
-                material.mainTexture = textureCamera;
-                
-                rend.material.mainTexture = textureCamera;
-                    
-                //Destroy( quad, 5f );
-                
-                // If a procedural texture is not destroyed manually, 
-                // it will only be freed after a scene change
-                Destroy( textureCamera, 5f );
-            }
-        }, maxSize );
-
-        Debug.Log( "Permission result: " + permission );
-    }
-*/
 }

@@ -4,7 +4,7 @@ C:/Users/Jeimison/Documents/UnityProjs/VREye/VREyeOut.apk
 SceneListBegin?
 Assets/VREye/MainApp.unity
 SceneListEnd?
-8877c33d4aef94311562ecf8405e3705 Assembly-CSharp.dll:.MainUpdate
+2e2ce53f5da8873671e6c5607835b993 Assembly-CSharp.dll:.MainUpdate
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 23efcd1831b04ace52b7b3485f150f24 Assembly-CSharp.dll:.GvrDropdown
 8f9981ae062e1a02c7f0bcdf63e95233 Assembly-CSharp.dll:GoogleVR.HelloVR.HeadsetDemoManager
@@ -22,6 +22,7 @@ e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.G
 e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 201e3fde670b00545944bb3db215c80a UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:Gvr.Internal.EditorCameraOriginDict
+71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.EventTrigger
 e7a73f5f78ba6445195ec23b74a1ce2d Unity.TextMeshPro.dll:TMPro.TMP_ScrollbarEventHandler
 84b31b71fcfc0d02bf4204522ea292b1 Assembly-CSharp.dll:.GvrVideoPlayerTexture
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Advertisements.Editor.dll:UnityEngine.Advertisements.Editor.Placeholder
@@ -204,7 +205,7 @@ bfb27555fe9d8f8f2507fc6a7abd6ce0 Assembly-CSharp.dll:.GvrAllEventsTrigger
 71bb6a6b6c8f052f948db64c7dd3ca4f Unity.Analytics.Editor.dll:UnityEditor.Analytics.AnalyticsEventTrackerEditor
 10e5e5a6a80d1d5521d8e42ecdcff303 Assembly-CSharp.dll:GoogleVR.Beta.Demos.DemoSeeThroughController
 71bb6a6b6c8f052f948db64c7dd3ca4f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ReceiveResult
+30504da79e7ad1485c995159792768bd Assembly-CSharp.dll:.ReceiveResult
 f694021fab526c14fbd3efebc16d5eba Assembly-CSharp.dll:.GvrTrackedController
 1f8286dbbba9b39b9120dec32b8944e4 Assembly-CSharp.dll:.GvrLaserPointer
 4fd8bf02e3089425d3502e26c44ba31a Unity.TextMeshPro.dll:TMPro.TextContainer
@@ -255,7 +256,6 @@ a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 89c433fef753b02de32958d7fe54cc06 Assembly-CSharp.dll:.GvrLaserVisual
 3521ce3e471952c1bdd4cc618dceb5ae Assembly-CSharp.dll:.GvrControllerVisual
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.Test
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.ScrubberEvents
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.VideoControlsManager
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
@@ -342,4 +342,3 @@ ae91c545dea6ac849dd81c4b660c68ca Vuforia.UnityExtensions.dll:Vuforia.VuforiaConf
 69167579cf7fcbb2676fc1e675963dcd Vuforia.UnityExtensions.dll:Vuforia.VuMarkBehaviour
 fbbf64dcbe0662e3eda1dec45ea8f895 Vuforia.UnityExtensions.dll:Vuforia.WireframeBehaviour
 71bb6a6b6c8f052f948db64c7dd3ca4f Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.EventTrigger
