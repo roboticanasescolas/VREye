@@ -11,6 +11,7 @@ public class MainUpdate : MonoBehaviour
 	
 
     /* WEBCAM */
+    
     public bool frontFacing;
     public RawImage background;
     public FILTROS_POSTPROCESS Filtro;
@@ -20,11 +21,23 @@ public class MainUpdate : MonoBehaviour
 	private WebCamTexture cameraTexture;
     private Texture2D output;
     private Color32[] data;
+
+    private WebTTS _webtts;
+
+    private int maxResolution = 900;
     
     
-    void Start()
-    {
+    void Start(){
+        /* Instancia Text-to-speech */
+        _webtts = GameObject.FindObjectOfType(typeof(WebTTS)) as WebTTS;
+
+        _webtts.PlayFala("Aguarde, preparando voz.");
+
+        _webtts.PrepareBasicAudios();
+
         solicitaPermissoes();
+
+        _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_MENU_APRESENTACAO);
         
         /*WebCamTexture webcamTexture = new WebCamTexture();
         rend.material.mainTexture = webcamTexture;
@@ -45,17 +58,20 @@ public class MainUpdate : MonoBehaviour
             Debug.Log("CAM: "+curr.name);
                         
 			if (curr.isFrontFacing == frontFacing || (devices.Length == 1)) {
+
                 if(curr.availableResolutions != null)
-                if( curr.availableResolutions.Length > 0){
-                    Resolution myRes = curr.availableResolutions[0]; 
-                    for(int resID= 1; resID < curr.availableResolutions.Length; resID++){
-                        Debug.Log("Res: "+curr.availableResolutions[resID].height+"x"+curr.availableResolutions[resID].width);
-                        if(myRes.height < curr.availableResolutions[resID].height)
-                            myRes = curr.availableResolutions[resID];
+                    if( curr.availableResolutions.Length > 0){
+                        Resolution myRes = new Resolution(); 
+                        foreach (var res in curr.availableResolutions) {
+                            //Debug.Log("Res: "+curr.availableResolutions[resID].height+"x"+curr.availableResolutions[resID].width);
+                            if(res.height < this.maxResolution && res.width < this.maxResolution) {
+                                myRes = res;
+                                break;
+                            }
+                        }
+                        rendWidth = myRes.width;
+                        rendHeight = myRes.height;
                     }
-                    rendWidth = myRes.width;
-                    rendHeight = myRes.height;
-                }
 				cameraTexture = new WebCamTexture(curr.name, rendWidth, rendHeight);
 				break;
 			}
@@ -132,7 +148,7 @@ public class MainUpdate : MonoBehaviour
 
     }
 
-    void solicitaPermissoes(){
+    private void solicitaPermissoes(){
         string[] permissoes = {
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.CAMERA"
@@ -145,16 +161,28 @@ public class MainUpdate : MonoBehaviour
 			    novasRequisicoes.Add(permissoes[i]);
         }
 
-        if(novasRequisicoes.Count > 0){ 
+        if(novasRequisicoes.Count > 0){
+
+            fazApresentacaoApp();
+            int Permitido = 0;
             AndroidRuntimePermissions.Permission[] resultRequest = AndroidRuntimePermissions.RequestPermissions( novasRequisicoes.ToArray() );
             for(int i=0; i < resultRequest.Length; i++){
-                if( resultRequest[i] == AndroidRuntimePermissions.Permission.Granted )
+                if( resultRequest[i] == AndroidRuntimePermissions.Permission.Granted ){
+                    Permitido++;
                     Debug.Log( "Nova permissão concedida!" );
+                }
                 else
                     Debug.Log( "Estado da permissão: " + resultRequest[i] );
-            }   
+            }
+            if(Permitido == resultRequest.Length){
+                // Obrigado!
+            }  
         }
         
+    }
+
+    private void fazApresentacaoApp(){
+        _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_APRESENTACAO);
     }
 
 
