@@ -26,26 +26,21 @@ public class MainUpdate : MonoBehaviour
 
     private int maxResolution = 900;
     
-    
-    void Start(){
-        /* Instancia Text-to-speech */
-        _webtts = GameObject.FindObjectOfType(typeof(WebTTS)) as WebTTS;
+    IEnumerator vozInicializacao(){
+        _webtts.Fala("Aguarde, preparando voz.");
 
-        _webtts.PlayFala("Aguarde, preparando voz.");
-
-        _webtts.PrepareBasicAudios();
-
+        yield return StartCoroutine(_webtts.PrepareBasicAudios());
         solicitaPermissoes();
+        
+
 
         _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_MENU_APRESENTACAO);
-        
-        /*WebCamTexture webcamTexture = new WebCamTexture();
-        rend.material.mainTexture = webcamTexture;
-        webcamTexture.Play();*/
 
-        // Importado parte de: https://github.com/Chamuth/unity-webcam/blob/master/MobileCam.cs
+        cameraConfig();
+    }
 
-		WebCamDevice[] devices = WebCamTexture.devices;
+    void cameraConfig(){
+        WebCamDevice[] devices = WebCamTexture.devices;
 
         Debug.Log("CAMs count: " + devices.Length );
 
@@ -88,6 +83,29 @@ public class MainUpdate : MonoBehaviour
         output = new Texture2D(cameraTexture.width, cameraTexture.height);
         background.texture = output;
         data = new Color32[cameraTexture.width * cameraTexture.height];
+
+        
+    }
+    
+    void Start(){
+        /* Instancia Text-to-speech */
+        _webtts = GameObject.FindObjectOfType(typeof(WebTTS)) as WebTTS;
+
+        
+        StartCoroutine(vozInicializacao());
+        
+
+        
+
+        //
+        
+        /*WebCamTexture webcamTexture = new WebCamTexture();
+        rend.material.mainTexture = webcamTexture;
+        webcamTexture.Play();*/
+
+        // Importado parte de: https://github.com/Chamuth/unity-webcam/blob/master/MobileCam.cs
+
+		
 
     }
 
@@ -150,6 +168,8 @@ public class MainUpdate : MonoBehaviour
 
     private void solicitaPermissoes(){
         string[] permissoes = {
+            "android.permission.INTERNET",
+            "android.permission.ACCESS_NETWORK_STATE",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.CAMERA"
             };
@@ -162,8 +182,7 @@ public class MainUpdate : MonoBehaviour
         }
 
         if(novasRequisicoes.Count > 0){
-
-            fazApresentacaoApp();
+            _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_APRESENTACAO);
             int Permitido = 0;
             AndroidRuntimePermissions.Permission[] resultRequest = AndroidRuntimePermissions.RequestPermissions( novasRequisicoes.ToArray() );
             for(int i=0; i < resultRequest.Length; i++){
@@ -175,15 +194,13 @@ public class MainUpdate : MonoBehaviour
                     Debug.Log( "Estado da permissão: " + resultRequest[i] );
             }
             if(Permitido == resultRequest.Length){
-                // Obrigado!
+                _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_PERMISSOES_OK);
             }  
         }
         
     }
 
-    private void fazApresentacaoApp(){
-        _webtts.PlayAudioPredefinido(FalaPredefinida.AUDIO_APRESENTACAO);
-    }
+    
 
 
 }
